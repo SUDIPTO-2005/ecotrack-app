@@ -40,7 +40,7 @@ class UserRegistrationSerializer(serializers.Serializer):
         default="",
     )
     country = serializers.CharField(
-        max_length=2,
+        max_length=100,
         required=False,
         allow_blank=True,
         default="",
@@ -54,6 +54,10 @@ class UserRegistrationSerializer(serializers.Serializer):
     def validate_display_name(self, value: str) -> str:
         """Strip whitespace and validate display name length."""
         return value.strip()
+
+    def validate_country(self, value: str) -> str:
+        """Convert to ISO-like 2-character code."""
+        return value.upper()[:2] if value else ""
 
 
 class UserLoginSerializer(serializers.Serializer):
