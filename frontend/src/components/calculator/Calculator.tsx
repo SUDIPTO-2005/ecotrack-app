@@ -50,9 +50,10 @@ export default function Calculator() {
       });
       showToast('Carbon footprint estimated successfully!', 'success');
       await fetchUser(); // Updates onboarding_complete status
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      showToast(err?.error?.message || 'Calculation failed. Please verify inputs.', 'error');
+      const error = err as { error?: { message?: string } };
+      showToast(error.error?.message || 'Calculation failed. Please verify inputs.', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -68,9 +69,10 @@ export default function Calculator() {
       });
       showToast('Detailed carbon footprint calculated successfully!', 'success');
       await fetchUser(); // Updates onboarding_complete status
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      showToast(err?.error?.message || 'Detailed calculation failed. Please check inputs.', 'error');
+      const error = err as { error?: { message?: string } };
+      showToast(error.error?.message || 'Detailed calculation failed. Please check inputs.', 'error');
     } finally {
       setIsSubmitting(false);
     }

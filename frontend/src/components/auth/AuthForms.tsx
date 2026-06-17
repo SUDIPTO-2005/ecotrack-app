@@ -38,9 +38,10 @@ export default function AuthForms() {
       setIsAuthenticated(true);
       showToast('Logged in successfully!', 'success');
       await fetchUser();
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      showToast(err?.error?.message || err?.detail || 'Invalid email or password.', 'error');
+      const error = err as { error?: { message?: string }; detail?: string };
+      showToast(error.error?.message || error.detail || 'Invalid email or password.', 'error');
     } finally {
       setLoading(false);
     }
@@ -63,11 +64,12 @@ export default function AuthForms() {
       apiClient.setTokens(tokens.access, tokens.refresh);
       setIsAuthenticated(true);
       await fetchUser();
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
+      const error = err as { error?: { message?: string; details?: Record<string, string | string[]> } };
       let errorMessage = 'Registration failed. Check password length (min 10) and email format.';
-      if (err?.error?.details) {
-        const details = err.error.details;
+      if (error.error?.details) {
+        const details = error.error.details;
         const messages = Object.keys(details).map(key => {
           const fieldErrors = Array.isArray(details[key]) ? details[key].join(', ') : details[key];
           return `${key}: ${fieldErrors}`;

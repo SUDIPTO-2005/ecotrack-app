@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAppStore } from '../../store/useAppStore';
 import { apiClient } from '../../api/apiClient';
 import { Trophy, ShieldCheck, Plus, Minus, Users, Star, Landmark } from 'lucide-react';
@@ -41,7 +41,7 @@ export default function Challenges() {
   const [leaderboardScope, setLeaderboardScope] = useState<'global' | 'city'>('global');
   const [loading, setLoading] = useState(true);
 
-  const loadChallengesData = async () => {
+  const loadChallengesData = useCallback(async () => {
     try {
       const challengeList = await apiClient.request<Challenge[]>('/challenges/');
       setChallenges(challengeList || []);
@@ -56,19 +56,20 @@ export default function Challenges() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [leaderboardScope]);
 
   useEffect(() => {
     loadChallengesData();
-  }, [leaderboardScope]);
+  }, [leaderboardScope, loadChallengesData]);
 
   const handleJoin = async (id: number) => {
     try {
       await apiClient.request(`/challenges/${id}/join/`, { method: 'POST' });
       showToast('Joined community challenge successfully!', 'success');
       loadChallengesData();
-    } catch (err: any) {
-      showToast(err?.error?.message || 'Failed to join challenge', 'error');
+    } catch (err) {
+      const error = err as { error?: { message?: string } };
+      showToast(error.error?.message || 'Failed to join challenge', 'error');
     }
   };
 
@@ -77,8 +78,9 @@ export default function Challenges() {
       await apiClient.request(`/challenges/${id}/leave/`, { method: 'POST' });
       showToast('Left community challenge.', 'info');
       loadChallengesData();
-    } catch (err: any) {
-      showToast(err?.error?.message || 'Failed to leave challenge', 'error');
+    } catch (err) {
+      const error = err as { error?: { message?: string } };
+      showToast(error.error?.message || 'Failed to leave challenge', 'error');
     }
   };
 

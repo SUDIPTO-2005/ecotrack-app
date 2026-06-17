@@ -27,7 +27,7 @@ function App() {
     if (isAuthenticated) {
       fetchUser();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, fetchUser]);
 
   // Handle global auth-expired event from apiClient
   useEffect(() => {

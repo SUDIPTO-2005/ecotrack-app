@@ -65,8 +65,9 @@ export default function Profile() {
       });
       showToast('Profile configuration updated!', 'success');
       await fetchUser();
-    } catch (err: any) {
-      showToast(err?.error?.message || 'Failed to update profile.', 'error');
+    } catch (err) {
+      const error = err as { error?: { message?: string } };
+      showToast(error.error?.message || 'Failed to update profile.', 'error');
     } finally {
       setSavingProfile(false);
     }
@@ -81,8 +82,9 @@ export default function Profile() {
         body: JSON.stringify(notifForm),
       });
       showToast('Notification frequency settings updated.', 'success');
-    } catch (err: any) {
-      showToast(err?.error?.message || 'Failed to update notification rules.', 'error');
+    } catch (err) {
+      const error = err as { error?: { message?: string } };
+      showToast(error.error?.message || 'Failed to update notification rules.', 'error');
     } finally {
       setSavingNotif(false);
     }
@@ -142,7 +144,7 @@ export default function Profile() {
             <select
               id="privacy_level"
               value={profileForm.privacy_level}
-              onChange={(e) => setProfileForm({ ...profileForm, privacy_level: e.target.value as any })}
+              onChange={(e) => setProfileForm({ ...profileForm, privacy_level: e.target.value as ProfileData['privacy_level'] })}
             >
               <option value="anonymous">Anonymous (Hidden from lists, shows as Anonymous User)</option>
               <option value="friends">Friends Only (Visible to friends network)</option>

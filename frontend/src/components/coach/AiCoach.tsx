@@ -52,10 +52,11 @@ export default function AiCoach() {
         body: JSON.stringify({}),
       });
       setCoachResponse(response);
-    } catch (err: any) {
+    } catch (err) {
       // apiClient throws the raw JSON body — check nested error.code
-      const code = err?.error?.code || '';
-      const msg = err?.error?.message || '';
+      const error = err as { error?: { code?: string; message?: string } };
+      const code = error.error?.code || '';
+      const msg = error.error?.message || '';
       if (code === 'no_data' || msg.includes('footprint') || msg.includes('no_data')) {
         setNoData(true);
       } else {
@@ -70,7 +71,7 @@ export default function AiCoach() {
   const loadOffsets = async () => {
     setLoadingOffsets(true);
     try {
-      const response = await apiClient.request<any>('/offsets/');
+      const response = await apiClient.request<OffsetProject[] | { results: OffsetProject[] }>('/offsets/');
       // Backend may return paginated { results: [] } or a plain array
       const list = Array.isArray(response)
         ? response
