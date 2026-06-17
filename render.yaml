@@ -1,0 +1,55 @@
+# ============================================================
+# EcoTrack — Render.com Blueprint (Infrastructure as Code)
+# Deploy: https://render.com/deploy
+# ============================================================
+
+services:
+  # ── Django Backend ──────────────────────────────────────────
+  - type: web
+    name: ecotrack-backend
+    runtime: python
+    region: singapore          # Closest free-tier region to India
+    plan: free
+    rootDir: backend
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.cloudrun
+      - key: DJANGO_SECRET_KEY
+        generateValue: true         # Render auto-generates a secure value
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ecotrack-db
+          property: connectionString
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "*"
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://ecotrack-frontend.onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+
+  # ── React Frontend ──────────────────────────────────────────
+  - type: web
+    name: ecotrack-frontend
+    runtime: node
+    region: singapore
+    plan: free
+    rootDir: frontend
+    buildCommand: "npm install && VITE_API_BASE_URL=https://ecotrack-backend.onrender.com npm run build"
+    startCommand: "npx serve dist -p $PORT"
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: VITE_API_BASE_URL
+        value: "https://ecotrack-backend.onrender.com"
+
+# ── Free PostgreSQL Database ────────────────────────────────
+databases:
+  - name: ecotrack-db
+    plan: free
+    region: singapore
+    databaseName: ecotrack
+    user: ecotrack
