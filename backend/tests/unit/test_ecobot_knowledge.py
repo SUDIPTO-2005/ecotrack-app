@@ -17,11 +17,11 @@ def test_get_chatbot_response_exact_patterns():
 def test_get_chatbot_response_keyword_fallbacks():
     # Test "carbon" fallback to "footprint"
     res = get_chatbot_response("carbon emissions")
-    assert "what is a carbon footprint" in res.lower()
+    assert "understanding your carbon footprint" in res.lower()
 
     # Test "reduce" fallback to "tip"
     res = get_chatbot_response("how to reduce footprint")
-    assert "easy carbon reductions" in res.lower()
+    assert "top 10 actions to reduce" in res.lower()
 
 def test_get_chatbot_response_generic_fallback():
     # Test generic query fallback
