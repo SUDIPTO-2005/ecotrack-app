@@ -88,8 +88,9 @@ export default function Calculator() {
         {step === 1 && (
           <div className="wizard-step">
             <h3 className="wizard-step-title"><Car size={20} className="step-icon" /> Daily Transport</h3>
-            <label>Weekly Car Travel ({quickForm.car_km_per_week} km)</label>
+            <label htmlFor="quick_car_travel">Weekly Car Travel ({quickForm.car_km_per_week} km)</label>
             <input
+              id="quick_car_travel"
               type="range"
               min="0"
               max="1000"
@@ -103,8 +104,9 @@ export default function Calculator() {
               <span>1000+ km</span>
             </div>
 
-            <label style={{ marginTop: '20px', display: 'block' }}>Car Fuel Type</label>
+            <label htmlFor="quick_car_fuel" style={{ marginTop: '20px', display: 'block' }}>Car Fuel Type</label>
             <select
+              id="quick_car_fuel"
               value={quickForm.car_fuel_type}
               onChange={(e) => setQuickForm({ ...quickForm, car_fuel_type: e.target.value })}
             >
@@ -119,8 +121,9 @@ export default function Calculator() {
         {step === 2 && (
           <div className="wizard-step">
             <h3 className="wizard-step-title"><Lightbulb size={20} className="step-icon" /> Energy Consumption</h3>
-            <label>Monthly Household Electricity Usage ({quickForm.electricity_kwh_per_month} kWh)</label>
+            <label htmlFor="quick_electricity">Monthly Household Electricity Usage ({quickForm.electricity_kwh_per_month} kWh)</label>
             <input
+              id="quick_electricity"
               type="range"
               min="0"
               max="2000"
@@ -140,8 +143,9 @@ export default function Calculator() {
         {step === 3 && (
           <div className="wizard-step">
             <h3 className="wizard-step-title"><Leaf size={20} className="step-icon" /> Diet & Food Style</h3>
-            <label>Describe your general eating habits:</label>
+            <label htmlFor="quick_diet">Describe your general eating habits:</label>
             <select
+              id="quick_diet"
               value={quickForm.diet_type}
               onChange={(e) => setQuickForm({ ...quickForm, diet_type: e.target.value })}
             >
@@ -160,8 +164,9 @@ export default function Calculator() {
             <h3 className="wizard-step-title"><Plane size={20} className="step-icon" /> Air Travel</h3>
             <div className="number-fields-grid">
               <div>
-                <label>Short-haul Flights (per year)</label>
+                <label htmlFor="quick_flights_short">Short-haul Flights (per year)</label>
                 <input
+                  id="quick_flights_short"
                   type="number"
                   min="0"
                   max="100"
@@ -171,8 +176,9 @@ export default function Calculator() {
                 <span className="field-hint">Under 3 hours duration</span>
               </div>
               <div>
-                <label>Long-haul Flights (per year)</label>
+                <label htmlFor="quick_flights_long">Long-haul Flights (per year)</label>
                 <input
+                  id="quick_flights_long"
                   type="number"
                   min="0"
                   max="100"
@@ -219,8 +225,9 @@ export default function Calculator() {
             <h3 className="wizard-step-title"><Car size={20} className="step-icon" /> Comprehensive Transport</h3>
             <div className="number-fields-grid scrollable-panel">
               <div>
-                <label>Car Travel per week (km)</label>
+                <label htmlFor="det_car_travel">Car Travel per week (km)</label>
                 <input
+                  id="det_car_travel"
                   type="number"
                   min="0"
                   value={detailedForm.car_km_per_week}
@@ -228,8 +235,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Car Fuel Type</label>
+                <label htmlFor="det_car_fuel">Car Fuel Type</label>
                 <select
+                  id="det_car_fuel"
                   value={detailedForm.car_fuel_type}
                   onChange={(e) => setDetailedForm({ ...detailedForm, car_fuel_type: e.target.value })}
                 >
@@ -240,8 +248,9 @@ export default function Calculator() {
                 </select>
               </div>
               <div>
-                <label>Bus Travel per week (km)</label>
+                <label htmlFor="det_bus_travel">Bus Travel per week (km)</label>
                 <input
+                  id="det_bus_travel"
                   type="number"
                   min="0"
                   value={detailedForm.bus_km_per_week}
@@ -249,8 +258,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Rail/Train per week (km)</label>
+                <label htmlFor="det_rail_travel">Rail/Train per week (km)</label>
                 <input
+                  id="det_rail_travel"
                   type="number"
                   min="0"
                   value={detailedForm.rail_km_per_week}
@@ -258,8 +268,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Motorbike/Scooter per week (km)</label>
+                <label htmlFor="det_moto_travel">Motorbike/Scooter per week (km)</label>
                 <input
+                  id="det_moto_travel"
                   type="number"
                   min="0"
                   value={detailedForm.motorbike_km_per_week}
@@ -275,8 +286,9 @@ export default function Calculator() {
             <h3 className="wizard-step-title"><Plane size={20} className="step-icon" /> Flying Details</h3>
             <div className="number-fields-grid">
               <div>
-                <label>Short-haul Flights (per year)</label>
+                <label htmlFor="det_flights_short">Short-haul Flights (per year)</label>
                 <input
+                  id="det_flights_short"
                   type="number"
                   min="0"
                   value={detailedForm.flights_short_haul_per_year}
@@ -284,8 +296,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Long-haul Flights (per year)</label>
+                <label htmlFor="det_flights_long">Long-haul Flights (per year)</label>
                 <input
+                  id="det_flights_long"
                   type="number"
                   min="0"
                   value={detailedForm.flights_long_haul_per_year}
@@ -301,8 +314,9 @@ export default function Calculator() {
             <h3 className="wizard-step-title"><Lightbulb size={20} className="step-icon" /> Household Energy</h3>
             <div className="number-fields-grid">
               <div>
-                <label>Electricity (kWh per month)</label>
+                <label htmlFor="det_electricity">Electricity (kWh per month)</label>
                 <input
+                  id="det_electricity"
                   type="number"
                   min="0"
                   value={detailedForm.electricity_kwh_per_month}
@@ -310,8 +324,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Natural Gas (kWh per month)</label>
+                <label htmlFor="det_gas">Natural Gas (kWh per month)</label>
                 <input
+                  id="det_gas"
                   type="number"
                   min="0"
                   value={detailedForm.natural_gas_kwh_per_month}
@@ -319,8 +334,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Heating Oil (Litres per year)</label>
+                <label htmlFor="det_oil">Heating Oil (Litres per year)</label>
                 <input
+                  id="det_oil"
                   type="number"
                   min="0"
                   value={detailedForm.heating_oil_litres_per_year}
@@ -336,8 +352,9 @@ export default function Calculator() {
             <h3 className="wizard-step-title"><ShoppingBag size={20} className="step-icon" /> Diet & Goods</h3>
             <div className="number-fields-grid scrollable-panel">
               <div style={{ gridColumn: 'span 2' }}>
-                <label>Diet Type</label>
+                <label htmlFor="det_diet">Diet Type</label>
                 <select
+                  id="det_diet"
                   value={detailedForm.diet_type}
                   onChange={(e) => setDetailedForm({ ...detailedForm, diet_type: e.target.value })}
                 >
@@ -350,8 +367,9 @@ export default function Calculator() {
                 </select>
               </div>
               <div>
-                <label>New Clothing Items / year</label>
+                <label htmlFor="det_clothes">New Clothing Items / year</label>
                 <input
+                  id="det_clothes"
                   type="number"
                   min="0"
                   value={detailedForm.new_clothing_items_per_year}
@@ -359,8 +377,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Laptops purchased / year</label>
+                <label htmlFor="det_laptops">Laptops purchased / year</label>
                 <input
+                  id="det_laptops"
                   type="number"
                   min="0"
                   value={detailedForm.new_electronics_laptops_per_year}
@@ -368,8 +387,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Smartphones purchased / year</label>
+                <label htmlFor="det_smartphones">Smartphones purchased / year</label>
                 <input
+                  id="det_smartphones"
                   type="number"
                   min="0"
                   value={detailedForm.new_electronics_smartphones_per_year}
@@ -385,8 +405,9 @@ export default function Calculator() {
             <h3 className="wizard-step-title"><Trash2 size={20} className="step-icon" /> Waste & Recycling</h3>
             <div className="number-fields-grid">
               <div>
-                <label>Total General Waste per week (kg)</label>
+                <label htmlFor="det_waste">Total General Waste per week (kg)</label>
                 <input
+                  id="det_waste"
                   type="number"
                   min="0"
                   value={detailedForm.waste_kg_per_week}
@@ -394,8 +415,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Recycling Ratio (0 to 1)</label>
+                <label htmlFor="det_recycling">Recycling Ratio (0 to 1)</label>
                 <input
+                  id="det_recycling"
                   type="number"
                   min="0"
                   max="1"
@@ -405,8 +427,9 @@ export default function Calculator() {
                 />
               </div>
               <div>
-                <label>Food Waste per week (kg)</label>
+                <label htmlFor="det_food_waste">Food Waste per week (kg)</label>
                 <input
+                  id="det_food_waste"
                   type="number"
                   min="0"
                   value={detailedForm.food_waste_kg_per_week}

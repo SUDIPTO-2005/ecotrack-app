@@ -37,19 +37,43 @@ def test_award_badge_nonexistent(test_user):
 
 def test_check_and_award_on_calculation(db, test_user, seed_badges_db):
     # 1. Test first calculation ever
-    FootprintEntry.objects.create(user=test_user, total_co2e_kg=Decimal("1500"), period_days=365, mode="quick")
+    FootprintEntry.objects.create(
+        user=test_user,
+        date=timezone.now().date(),
+        total_co2e_kg=Decimal("1500"),
+        period_days=365,
+        mode="quick",
+        factor_version="2023-v1",
+        raw_data={}
+    )
     new_badges = check_and_award_on_calculation(test_user, mode="quick")
     assert "First Step" in new_badges
     assert "Low Carbon Hero" in new_badges  # 1500 kg/yr is < 2000
 
     # 2. Test first detailed calculation
-    FootprintEntry.objects.create(user=test_user, total_co2e_kg=Decimal("3000"), period_days=365, mode="detailed")
+    FootprintEntry.objects.create(
+        user=test_user,
+        date=timezone.now().date(),
+        total_co2e_kg=Decimal("3000"),
+        period_days=365,
+        mode="detailed",
+        factor_version="2023-v1",
+        raw_data={}
+    )
     new_badges = check_and_award_on_calculation(test_user, mode="detailed")
     assert "Detail Oriented" in new_badges
 
     # 3. Add more to get to 5+ calculations
     for _ in range(3):
-        FootprintEntry.objects.create(user=test_user, total_co2e_kg=Decimal("4000"), period_days=365, mode="quick")
+        FootprintEntry.objects.create(
+            user=test_user,
+            date=timezone.now().date(),
+            total_co2e_kg=Decimal("4000"),
+            period_days=365,
+            mode="quick",
+            factor_version="2023-v1",
+            raw_data={}
+        )
     new_badges = check_and_award_on_calculation(test_user, mode="quick")
     assert "Multi-Tracker" in new_badges
 

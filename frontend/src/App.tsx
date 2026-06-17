@@ -43,8 +43,15 @@ function App() {
       <>
         <AuthForms />
         {toast && (
-          <div className="toast-container">
-            <div className={`toast ${toast.type}`} onClick={clearToast}>
+          <div className="toast-container" role="alert" aria-live="assertive">
+            <div 
+              className={`toast ${toast.type}`} 
+              onClick={clearToast}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); clearToast(); } }}
+              aria-label={`Notification: ${toast.message}. Click to dismiss.`}
+            >
               {toast.message}
             </div>
           </div>
@@ -147,8 +154,15 @@ function App() {
 
       {/* Notification Toast Messages */}
       {toast && (
-        <div className="toast-container">
-          <div className={`toast ${toast.type}`} onClick={clearToast}>
+        <div className="toast-container" role="alert" aria-live="assertive">
+          <div 
+            className={`toast ${toast.type}`} 
+            onClick={clearToast}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); clearToast(); } }}
+            aria-label={`Notification: ${toast.message}. Click to dismiss.`}
+          >
             {toast.message}
           </div>
         </div>

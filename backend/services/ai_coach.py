@@ -175,5 +175,5 @@ class AiCoachService:
         # Average estimation of $0.0005 per query.
         stat.total_calls += 1
         stat.total_tokens += tokens
-        stat.total_cost_usd += Decimal(str(tokens)) * Decimal("0.000001")
+        stat.total_cost_usd = Decimal(str(stat.total_cost_usd)) + Decimal(str(tokens)) * Decimal("0.000001")
         stat.save()

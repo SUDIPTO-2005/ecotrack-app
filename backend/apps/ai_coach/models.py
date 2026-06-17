@@ -5,8 +5,10 @@ Stores session history, weekly cache tips, and token usage statistics for user c
 """
 from __future__ import annotations
 
+from decimal import Decimal
 from django.db import models
 from django.conf import settings
+
 
 
 class AiCoachingSession(models.Model):
@@ -42,7 +44,7 @@ class AiUsageStat(models.Model):
     date = models.DateField(unique=True, db_index=True)
     total_calls = models.PositiveIntegerField(default=0)
     total_tokens = models.PositiveIntegerField(default=0)
-    total_cost_usd = models.DecimalField(max_digits=10, decimal_places=4, default=0.0000)
+    total_cost_usd = models.DecimalField(max_digits=10, decimal_places=4, default=Decimal("0.0000"))
 
     class Meta:
         verbose_name = "AI Usage Stat"

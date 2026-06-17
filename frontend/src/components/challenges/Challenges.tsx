@@ -153,12 +153,14 @@ export default function Challenges() {
               <button
                 className={leaderboardScope === 'global' ? 'active' : ''}
                 onClick={() => setLeaderboardScope('global')}
+                aria-selected={leaderboardScope === 'global'}
               >
                 Global
               </button>
               <button
                 className={leaderboardScope === 'city' ? 'active' : ''}
                 onClick={() => setLeaderboardScope('city')}
+                aria-selected={leaderboardScope === 'city'}
               >
                 City
               </button>

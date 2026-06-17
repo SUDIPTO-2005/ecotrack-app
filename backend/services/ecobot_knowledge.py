@@ -438,8 +438,12 @@ def get_chatbot_response(message: str) -> str:
     # Try to match against each topic's patterns
     for topic in KNOWLEDGE_BASE:
         for pattern in topic["patterns"]:
-            if pattern in msg_lower:
-                return topic["response"]
+            if len(pattern) <= 3:
+                if re.search(r'\b' + re.escape(pattern) + r'(?:s\b|\b)', msg_lower):
+                    return topic["response"]
+            else:
+                if pattern in msg_lower:
+                    return topic["response"]
 
     # Keyword fallback for common single words
     if any(w in msg_lower for w in ["carbon", "emission", "ghg", "pollution"]):

@@ -98,7 +98,13 @@ export default function EcoBot() {
                 </p>
               </div>
             </div>
-            <button className="ecobot-close" onClick={() => setOpen(false)}>✕</button>
+            <button 
+              className="ecobot-close" 
+              onClick={() => setOpen(false)}
+              aria-label="Close EcoBot Chat"
+            >
+              ✕
+            </button>
           </div>
 
           {/* Messages */}
@@ -149,11 +155,13 @@ export default function EcoBot() {
               placeholder="Ask EcoBot anything..."
               rows={1}
               disabled={loading}
+              aria-label="Ask EcoBot anything..."
             />
             <button
               className="ecobot-send"
               onClick={() => sendMessage()}
               disabled={loading || !input.trim()}
+              aria-label="Send message to EcoBot"
             >
               ➤
             </button>
@@ -166,6 +174,8 @@ export default function EcoBot() {
         className={`ecobot-fab ${pulsing ? 'fab-pulse' : ''}`}
         onClick={() => setOpen(o => !o)}
         title="Chat with EcoBot"
+        aria-expanded={open}
+        aria-label={open ? "Close EcoBot chat" : "Open EcoBot chat"}
       >
         {open ? '✕' : '🌿'}
         {!open && <span className="fab-label">EcoBot</span>}

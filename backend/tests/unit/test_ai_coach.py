@@ -70,7 +70,7 @@ def test_chat_with_coach_success(mock_anthropic, db, test_user, coach_service, m
     result = coach_service.chat_with_coach(test_user, "hello")
     assert result["was_fallback"] is False
     assert result["reply"] == "I am your coach."
-
+@patch("anthropic.Anthropic")
 def test_chat_with_coach_failure_fallback(mock_anthropic, db, test_user, coach_service, monkeypatch):
     # Anthropic client throws an exception
     monkeypatch.setattr("django.conf.settings.ANTHROPIC_API_KEY", "mock-key")

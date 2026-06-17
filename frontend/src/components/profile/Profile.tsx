@@ -104,8 +104,9 @@ export default function Profile() {
           <p className="card-desc">Decide how your metrics appear on regional and global standers leaderboards.</p>
 
           <div className="input-group">
-            <label>Display Name</label>
+            <label htmlFor="display_name">Display Name</label>
             <input
+              id="display_name"
               type="text"
               value={profileForm.display_name}
               onChange={(e) => setProfileForm({ ...profileForm, display_name: e.target.value })}
@@ -115,8 +116,9 @@ export default function Profile() {
 
           <div className="input-row-grid">
             <div className="input-group">
-              <label>City</label>
+              <label htmlFor="city">City</label>
               <input
+                id="city"
                 type="text"
                 value={profileForm.city}
                 onChange={(e) => setProfileForm({ ...profileForm, city: e.target.value })}
@@ -124,8 +126,9 @@ export default function Profile() {
               />
             </div>
             <div className="input-group">
-              <label>Country</label>
+              <label htmlFor="country">Country</label>
               <input
+                id="country"
                 type="text"
                 value={profileForm.country}
                 onChange={(e) => setProfileForm({ ...profileForm, country: e.target.value })}
@@ -135,8 +138,9 @@ export default function Profile() {
           </div>
 
           <div className="input-group">
-            <label>Privacy Level</label>
+            <label htmlFor="privacy_level">Privacy Level</label>
             <select
+              id="privacy_level"
               value={profileForm.privacy_level}
               onChange={(e) => setProfileForm({ ...profileForm, privacy_level: e.target.value as any })}
             >
@@ -183,8 +187,9 @@ export default function Profile() {
           </div>
 
           <div className="input-group" style={{ marginTop: '24px' }}>
-            <label>Frequency Cap Limit (minimum days between notifications)</label>
+            <label htmlFor="frequency_cap">Frequency Cap Limit (minimum days between notifications)</label>
             <input
+              id="frequency_cap"
               type="number"
               min="1"
               max="30"
