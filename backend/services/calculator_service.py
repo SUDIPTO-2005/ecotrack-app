@@ -36,12 +36,11 @@ Usage::
 from __future__ import annotations
 
 import logging
-import math
 from dataclasses import dataclass, field
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Literal
 
-from emission_factors.loader import get_factor, get_current_version, FactorRecord
+from emission_factors.loader import FactorRecord, get_factor
 
 logger = logging.getLogger(__name__)
 

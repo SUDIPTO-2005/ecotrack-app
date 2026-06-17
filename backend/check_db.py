@@ -1,13 +1,13 @@
 import os
-import sys
+
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
 django.setup()
 
 from apps.accounts.models import User
-from apps.calculator.models import FootprintEntry
 from apps.ai_coach.models import AiCoachingSession
+from apps.calculator.models import FootprintEntry
 
 print("=== DB CHECK ===")
 users = User.objects.all()

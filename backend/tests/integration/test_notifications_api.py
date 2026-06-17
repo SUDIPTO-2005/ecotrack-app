@@ -4,13 +4,16 @@ Integration tests for the Notifications API endpoints (Phase 6).
 from __future__ import annotations
 
 import pytest
-from django.urls import reverse
 from django.core import mail
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from apps.accounts.models import User, NotificationPreference
-from apps.notifications.models import Notification, NotificationType, NotificationChannel
+from apps.accounts.models import NotificationPreference, User
+from apps.notifications.models import (
+    Notification,
+    NotificationType,
+)
 from services.notification_service import NotificationService
 
 _notify_svc = NotificationService()

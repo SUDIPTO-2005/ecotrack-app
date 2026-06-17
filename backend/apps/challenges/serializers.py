@@ -5,7 +5,13 @@ from __future__ import annotations
 
 from rest_framework import serializers
 
-from .models import Challenge, ChallengeParticipant, Badge, UserBadge, LeaderboardSnapshot
+from .models import (
+    Badge,
+    Challenge,
+    ChallengeParticipant,
+    LeaderboardSnapshot,
+    UserBadge,
+)
 
 
 class ChallengeSerializer(serializers.ModelSerializer):

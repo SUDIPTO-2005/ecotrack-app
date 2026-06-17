@@ -8,8 +8,9 @@ from __future__ import annotations
 
 import logging
 from decimal import Decimal
-from django.conf import settings
+
 import httpx
+from django.conf import settings
 
 from apps.offsets.models import OffsetProject
 
@@ -22,7 +23,7 @@ class OffsetRegistryService:
     def sync_projects(self) -> dict[str, int]:
         """
         Fetch available offset projects from sandbox registry or load mock defaults.
-        
+
         Returns:
             Dict containing stats of synced and skipped entries.
         """
@@ -40,17 +41,17 @@ class OffsetRegistryService:
             headers = {"Authorization": f"Bearer {api_key}"}
             response = httpx.get("https://api.patch.io/v1/projects", headers=headers, timeout=15.0)
             response.raise_for_status()
-            
+
             data = response.json()
             synced_count = 0
-            
+
             for proj in data.get("data", []):
                 project_id = proj.get("id")
                 name = proj.get("name")
                 # Price is typically in cents/grams in Patch API, convert to USD/tonne
                 price_cents = proj.get("average_price_per_tonne_cents_usd", 1500)
                 price = Decimal(str(price_cents)) / Decimal("100")
-                
+
                 OffsetProject.objects.update_or_create(
                     project_id=project_id,
                     defaults={
@@ -64,7 +65,7 @@ class OffsetRegistryService:
                     }
                 )
                 synced_count += 1
-                
+
             return {"synced": synced_count}
 
         except Exception as exc:

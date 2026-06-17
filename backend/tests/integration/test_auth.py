@@ -23,7 +23,6 @@ from rest_framework.test import APIClient
 
 from apps.accounts.models import NotificationPreference, User
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
@@ -421,7 +420,7 @@ class TestProfile:
         """Email field is read-only; PATCH does not change it."""
         client, user, _ = auth_client
         original_email = user.email
-        response = client.patch(
+        client.patch(
             reverse(self.URL),
             data={"email": "hacker@evil.com"},
             format="json",

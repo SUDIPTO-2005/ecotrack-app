@@ -5,8 +5,8 @@ Stores delivered in-app notifications and manages message templates.
 """
 from __future__ import annotations
 
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 
 class NotificationChannel(models.TextChoices):

@@ -1,5 +1,7 @@
 import pytest
+
 from services.tip_fallback import TipFallbackEngine
+
 
 @pytest.fixture
 def engine():
@@ -13,10 +15,10 @@ def test_generate_fallback_tips_with_all_categories(engine):
         {"category": "consumption", "percentage": 12},
         {"category": "waste", "percentage": 11}
     ]
-    
+
     tips = engine.generate_fallback_tips(breakdown)
     assert len(tips) == 5
-    
+
     categories = [t["category"] for t in tips]
     assert categories == ["transport", "energy", "diet", "consumption", "waste"]
     assert tips[0]["impact_level"] == "High"
@@ -28,7 +30,7 @@ def test_generate_fallback_tips_below_threshold(engine):
         {"category": "transport", "percentage": 5},
         {"category": "energy", "percentage": 8}
     ]
-    
+
     tips = engine.generate_fallback_tips(breakdown)
     assert len(tips) == 1
     assert tips[0]["category"] == "general"

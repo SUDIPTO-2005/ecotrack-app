@@ -5,8 +5,8 @@ Covers 30+ topic areas with rich, specific, evidence-based responses.
 Used as the primary response engine when no Anthropic API key is set.
 """
 from __future__ import annotations
-import re
 
+import re
 
 # ──────────────────────────────────────────────────────────────────────────────
 # KNOWLEDGE BASE — topic patterns mapped to rich responses

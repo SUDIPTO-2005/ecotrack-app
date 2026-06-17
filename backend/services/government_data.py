@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 import logging
 from decimal import Decimal
+
 import httpx
 
 from apps.data_sync.models import NationalAverageDataset
@@ -29,26 +30,26 @@ class GovernmentDataService:
     def sync_owid_data(self, csv_url: str) -> dict[str, int]:
         """
         Download Our World in Data CO2 dataset in CSV format and upsert local database entries.
-        
+
         Args:
             csv_url: Public url pointing to the CSV file.
-            
+
         Returns:
             Dict containing stats of synced and skipped entries.
         """
         logger.info("Starting OWID data sync", extra={"csv_url": csv_url})
-        
+
         try:
             response = httpx.get(csv_url, timeout=30.0)
             response.raise_for_status()
         except httpx.HTTPError as exc:
             logger.error("Failed to download OWID data", exc_info=exc)
-            raise RuntimeError(f"OWID sync download failed: {exc}")
+            raise RuntimeError(f"OWID sync download failed: {exc}") from exc
 
         content = response.text
         lines = content.splitlines()
         reader = csv.DictReader(lines)
-        
+
         synced_count = 0
         skipped_count = 0
 

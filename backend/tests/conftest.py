@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import pytest
 
-
 # ---------------------------------------------------------------------------
 # Database fixtures (used in integration tests, Phase 3+)
 # ---------------------------------------------------------------------------
@@ -31,10 +30,10 @@ def user_factory(db):
     """Factory for creating test users with a known password."""
     from django.contrib.auth import get_user_model
 
-    User = get_user_model()
+    user_model = get_user_model()
 
     def _create_user(email: str = "test@ecotrack.example.com", password: str = "TestPass123!"):
-        return User.objects.create_user(
+        return user_model.objects.create_user(
             username=email.split("@")[0],
             email=email,
             password=password,

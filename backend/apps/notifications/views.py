@@ -6,9 +6,9 @@ Exposes list, unread filter, and read toggles for user notifications.
 from __future__ import annotations
 
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Notification
 from .serializers import NotificationSerializer
@@ -23,7 +23,7 @@ class NotificationListView(APIView):
         """List user notifications."""
         unread_only = request.query_params.get("unread", "false").lower() == "true"
         queryset = Notification.objects.filter(user=request.user)
-        
+
         if unread_only:
             queryset = queryset.filter(read=False)
 

@@ -6,11 +6,15 @@ Triggers notifications checking user preferences at data-model level before send
 from __future__ import annotations
 
 import logging
+
 from django.conf import settings
 from django.core.mail import send_mail
 
-from apps.accounts.models import User, NotificationPreference
-from apps.notifications.models import Notification, NotificationChannel, NotificationType
+from apps.accounts.models import NotificationPreference, User
+from apps.notifications.models import (
+    Notification,
+    NotificationChannel,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +25,13 @@ class NotificationService:
     def trigger_nudge(self, user: User, notification_type: str, title: str, content: str) -> bool:
         """
         Evaluate user preferences and dispatch nudge across configured channels.
-        
+
         Args:
             user: Recipient user.
             notification_type: Nudge type e.g., 'streak_reminder'.
             title: Message title.
             content: Detailed body message text.
-            
+
         Returns:
             True if at least one notification was successfully triggered/sent.
         """

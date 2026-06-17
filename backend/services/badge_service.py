@@ -6,8 +6,8 @@ Called from calculator and challenge views after key user actions.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 import logging
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from apps.accounts.models import User
@@ -77,7 +77,7 @@ BADGE_DEFINITIONS = [
 ]
 
 
-def _award_badge(user: "User", badge_name: str) -> bool:
+def _award_badge(user: User, badge_name: str) -> bool:
     """
     Award a badge to a user if they don't already have it.
 
@@ -97,7 +97,7 @@ def _award_badge(user: "User", badge_name: str) -> bool:
     return created
 
 
-def check_and_award_on_calculation(user: "User", mode: str) -> list[str]:
+def check_and_award_on_calculation(user: User, mode: str) -> list[str]:
     """
     Check and award badges after a footprint calculation.
 
@@ -144,7 +144,7 @@ def check_and_award_on_calculation(user: "User", mode: str) -> list[str]:
     return awarded
 
 
-def check_and_award_on_challenge_join(user: "User") -> list[str]:
+def check_and_award_on_challenge_join(user: User) -> list[str]:
     """
     Check and award badges after a user joins a challenge.
 
@@ -169,7 +169,7 @@ def check_and_award_on_challenge_join(user: "User") -> list[str]:
     return awarded
 
 
-def check_and_award_on_streak(user: "User", streak_days: int) -> list[str]:
+def check_and_award_on_streak(user: User, streak_days: int) -> list[str]:
     """
     Check and award streak-based badges.
 
@@ -189,7 +189,7 @@ def check_and_award_on_streak(user: "User", streak_days: int) -> list[str]:
     return awarded
 
 
-def check_and_award_on_chat(user: "User") -> list[str]:
+def check_and_award_on_chat(user: User) -> list[str]:
     """Award EcoBot Fan badge on first chat."""
     awarded = []
     if _award_badge(user, "EcoBot Fan"):

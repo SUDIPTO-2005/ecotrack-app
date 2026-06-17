@@ -1,4 +1,5 @@
 from django.urls import path
+
 from apps.data_sync.views import GovDataSyncWebhookView
 
 urlpatterns = [

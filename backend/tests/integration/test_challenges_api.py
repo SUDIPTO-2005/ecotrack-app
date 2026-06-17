@@ -3,15 +3,20 @@ Integration tests for the Challenges and Leaderboard API endpoints (Phase 5).
 """
 from __future__ import annotations
 
-import pytest
-from decimal import Decimal
 from datetime import date, timedelta
+from decimal import Decimal
+
+import pytest
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from apps.accounts.models import User
-from apps.challenges.models import Challenge, ChallengeParticipant, Badge, UserBadge, LeaderboardSnapshot
+from apps.challenges.models import (
+    Challenge,
+    ChallengeParticipant,
+    LeaderboardSnapshot,
+)
 
 
 @pytest.fixture
@@ -78,7 +83,7 @@ class TestChallengesAPI:
     def test_challenge_leave_success(self, auth_client, registered_user, sample_challenge):
         """POST /api/v1/challenges/<id>/leave/ unregisters user as participant."""
         ChallengeParticipant.objects.create(user=registered_user, challenge=sample_challenge)
-        
+
         url = reverse("challenges-leave", kwargs={"pk": sample_challenge.pk})
         response = auth_client.post(url)
 

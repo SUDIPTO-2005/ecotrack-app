@@ -3,15 +3,16 @@ Integration tests for the AI Coach API endpoints (Phase 7).
 """
 from __future__ import annotations
 
-import pytest
 from datetime import date
+
+import pytest
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from apps.accounts.models import User
-from apps.calculator.models import FootprintEntry, FootprintCategory, CalculatorMode
 from apps.ai_coach.models import AiCoachingSession
+from apps.calculator.models import CalculatorMode, FootprintCategory, FootprintEntry
 
 
 @pytest.fixture

@@ -8,8 +8,9 @@ from __future__ import annotations
 
 import logging
 from decimal import Decimal
-from django.conf import settings
+
 import anthropic
+from django.conf import settings
 
 from apps.accounts.models import User
 from services.tip_fallback import TipFallbackEngine
@@ -24,11 +25,11 @@ class AiCoachService:
     def get_coaching_tips(self, user: User, category_breakdown: list[dict]) -> dict:
         """
         Get or generate weekly coaching tips for the user.
-        
+
         Args:
             user: Current authenticated user.
             category_breakdown: List of category breakdowns from calculator results.
-            
+
         Returns:
             Dict containing the tips, source (AI vs Fallback), and timestamp.
         """
@@ -71,9 +72,9 @@ class AiCoachService:
                 system=system_prompt,
                 messages=[{"role": "user", "content": user_prompt}],
             )
-            
+
             content = message.content[0].text
-            
+
             # Simple JSON parser fallback if Claude didn't wrap cleanly
             import json
             try:
@@ -86,7 +87,7 @@ class AiCoachService:
                     tips = json.loads(content)
             except json.JSONDecodeError:
                 logger.error("Claude returned malformed JSON, fallback triggered", extra={"response": content})
-                raise ValueError("Malformed AI output.")
+                raise ValueError("Malformed AI output.") from None
 
             return {
                 "tips": tips,
@@ -105,12 +106,14 @@ class AiCoachService:
                 "tokens_used": 0,
             }
 
-    def chat_with_coach(self, user: User, user_message: str, chat_history: list[dict] = []) -> dict:
+    def chat_with_coach(self, user: User, user_message: str, chat_history: list[dict] = None) -> dict:
         """
         Hold a conversation with EcoCoach.
         Uses Claude when API key is available, otherwise falls back to the
         comprehensive EcoBot knowledge base.
         """
+        if chat_history is None:
+            chat_history = []
         api_key = getattr(settings, "ANTHROPIC_API_KEY", "")
         if not api_key:
             from services.ecobot_knowledge import get_chatbot_response
@@ -154,8 +157,9 @@ class AiCoachService:
     def check_cost_budget(self) -> bool:
         """Helper to verify weekly/monthly token cost thresholds."""
         from django.utils import timezone
+
         from apps.ai_coach.models import AiUsageStat
-        
+
         today = timezone.now().date()
         stat, _ = AiUsageStat.objects.get_or_create(date=today)
         # Check if daily cost has exceeded $5.00 limit
@@ -166,11 +170,12 @@ class AiCoachService:
     def record_usage(self, tokens: int) -> None:
         """Record usage tokens and estimate daily costs."""
         from django.utils import timezone
+
         from apps.ai_coach.models import AiUsageStat
-        
+
         today = timezone.now().date()
         stat, _ = AiUsageStat.objects.get_or_create(date=today)
-        
+
         # Claude-3 Haiku costs: $0.25/MTok input, $1.25/MTok output.
         # Average estimation of $0.0005 per query.
         stat.total_calls += 1

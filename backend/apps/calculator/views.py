@@ -7,23 +7,24 @@ carbon footprint estimates for users.
 from __future__ import annotations
 
 from datetime import date
-from django.utils import timezone
+
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from services.calculator_service import (
     CalculatorService,
-    QuickCalculatorInput,
     DetailedCalculatorInput,
+    QuickCalculatorInput,
 )
+
+from .models import CalculatorMode, FootprintCategory, FootprintEntry
 from .serializers import (
-    QuickCalculatorInputSerializer,
     DetailedCalculatorInputSerializer,
     FootprintResultSerializer,
+    QuickCalculatorInputSerializer,
 )
-from .models import FootprintEntry, FootprintCategory, CalculatorMode
 
 _calculator_service = CalculatorService()
 

@@ -1,17 +1,19 @@
-import pytest
 from decimal import Decimal
+
+import pytest
 from django.utils import timezone
+
 from apps.accounts.models import User
-from apps.challenges.models import Badge, UserBadge
 from apps.calculator.models import FootprintEntry
-from apps.challenges.models import ChallengeParticipant, Challenge
+from apps.challenges.models import Badge, Challenge, ChallengeParticipant
 from services.badge_service import (
+    _award_badge,
     check_and_award_on_calculation,
     check_and_award_on_challenge_join,
-    check_and_award_on_streak,
     check_and_award_on_chat,
-    _award_badge
+    check_and_award_on_streak,
 )
+
 
 @pytest.fixture
 def test_user(db):
@@ -24,8 +26,8 @@ def test_user(db):
 @pytest.fixture
 def seed_badges_db(db):
     badges = [
-        "First Step", "Detail Oriented", "Challenge Accepted", 
-        "Streak Starter", "Eco Warrior", "Multi-Tracker", 
+        "First Step", "Detail Oriented", "Challenge Accepted",
+        "Streak Starter", "Eco Warrior", "Multi-Tracker",
         "Carbon Cutter", "Low Carbon Hero", "EcoBot Fan"
     ]
     for b in badges:

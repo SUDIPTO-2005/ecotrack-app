@@ -3,6 +3,7 @@ One-time script to create a default superuser on Render.
 Run via: python manage.py shell < create_admin.py
 """
 import os
+
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.cloudrun")

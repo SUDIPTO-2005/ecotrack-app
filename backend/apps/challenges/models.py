@@ -6,8 +6,8 @@ and leaderboard ranking snapshots.
 """
 from __future__ import annotations
 
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 
 class Challenge(models.Model):
@@ -111,7 +111,7 @@ class UserBadge(models.Model):
 class LeaderboardSnapshot(models.Model):
     """
     Cached leaderboard records.
-    
+
     Updated regularly via background task or cron, avoiding expensive live DB queries.
     """
 

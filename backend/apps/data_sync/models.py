@@ -11,7 +11,7 @@ from django.db import models
 class NationalAverageDataset(models.Model):
     """
     Dataset storing synced national per-capita averages.
-    
+
     Used to compare individual carbon footprints against national/global averages.
     """
 

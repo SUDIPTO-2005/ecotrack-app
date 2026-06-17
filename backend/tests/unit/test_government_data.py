@@ -1,9 +1,12 @@
-import pytest
 from decimal import Decimal
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import httpx
+import pytest
+
 from apps.data_sync.models import NationalAverageDataset
 from services.government_data import GovernmentDataService
+
 
 @pytest.fixture
 def gov_service():
@@ -22,19 +25,19 @@ def test_sync_owid_data_success(mock_get, db, gov_service):
         "Invalid ISO,2022,XYZ,2.0\n"  # should be skipped because XYZ is not in map
         "Missing Data,2022,IND,\n"  # should be skipped because missing co2
     )
-    
+
     mock_resp = MagicMock()
     mock_resp.text = mock_csv
     mock_resp.raise_for_status = MagicMock()
     mock_get.return_value = mock_resp
-    
+
     result = gov_service.sync_owid_data(csv_url)
     assert result["synced"] == 2
     assert result["skipped"] == 5
-    
+
     ind = NationalAverageDataset.objects.get(country_code="IN", year=2022)
     assert ind.per_capita_co2e_tonnes == Decimal("1.9")
-    
+
     usa = NationalAverageDataset.objects.get(country_code="US", year=2022)
     assert usa.per_capita_co2e_tonnes == Decimal("14.5")
 
@@ -42,6 +45,6 @@ def test_sync_owid_data_success(mock_get, db, gov_service):
 def test_sync_owid_data_download_failure(mock_get, gov_service):
     csv_url = "https://example.com/co2.csv"
     mock_get.side_effect = httpx.HTTPError("404 Not Found")
-    
+
     with pytest.raises(RuntimeError):
         gov_service.sync_owid_data(csv_url)

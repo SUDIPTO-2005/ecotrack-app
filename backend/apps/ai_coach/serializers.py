@@ -4,6 +4,7 @@ DRF serializers for the ai_coach app (Phase 7).
 from __future__ import annotations
 
 from datetime import timedelta
+
 from rest_framework import serializers
 
 from .models import AiCoachingSession

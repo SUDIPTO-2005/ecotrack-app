@@ -6,11 +6,12 @@ Exposes a protected sync webhook view that triggers the government data sync.
 from __future__ import annotations
 
 import logging
+
 from django.conf import settings
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from services.government_data import GovernmentDataService
 
@@ -21,7 +22,7 @@ _gov_service = GovernmentDataService()
 class GovDataSyncWebhookView(APIView):
     """
     POST /api/v1/internal/sync/national-averages/
-    
+
     Protected sync webhook view to trigger OWID data sync.
     Protected by a shared secret key (DATA_SYNC_SECRET).
     """

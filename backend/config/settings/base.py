@@ -4,9 +4,10 @@ Base Django settings for EcoTrack.
 All environment-specific settings (dev/prod) inherit from this module.
 Secrets must always come from environment variables — never hardcode.
 """
-from pathlib import Path
 from datetime import timedelta
-from decouple import config, Csv
+from pathlib import Path
+
+from decouple import Csv, config
 
 # ---------------------------------------------------------------------------
 # Paths

@@ -6,10 +6,9 @@ before handing off to the CalculatorService.
 """
 from __future__ import annotations
 
-from decimal import Decimal
 from rest_framework import serializers
 
-from .models import FootprintEntry, FootprintCategory, CalculatorMode
+from .models import FootprintCategory, FootprintEntry
 
 
 class QuickCalculatorInputSerializer(serializers.Serializer):

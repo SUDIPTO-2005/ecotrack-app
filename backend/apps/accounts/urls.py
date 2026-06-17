@@ -1,12 +1,13 @@
 from django.urls import path
+
 from apps.accounts.views import (
-    RegisterView,
     LoginView,
     LogoutView,
     MeView,
-    ProfileView,
-    PasswordChangeView,
     NotificationPreferenceView,
+    PasswordChangeView,
+    ProfileView,
+    RegisterView,
 )
 
 urlpatterns = [

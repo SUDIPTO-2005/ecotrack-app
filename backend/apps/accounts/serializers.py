@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from rest_framework import serializers
 
-from .models import User, NotificationPreference
+from .models import NotificationPreference, User
 
 
 class UserRegistrationSerializer(serializers.Serializer):

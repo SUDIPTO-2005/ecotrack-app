@@ -3,15 +3,16 @@ Integration tests for the Calculator and Dashboard API endpoints (Phase 3).
 """
 from __future__ import annotations
 
-import pytest
-from decimal import Decimal
 from datetime import date, timedelta
+from decimal import Decimal
+
+import pytest
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from apps.accounts.models import User
-from apps.calculator.models import FootprintEntry, FootprintCategory, CalculatorMode
+from apps.calculator.models import CalculatorMode, FootprintCategory, FootprintEntry
 
 
 @pytest.fixture

@@ -24,15 +24,12 @@ from decimal import Decimal
 
 import pytest
 
+from emission_factors.loader import get_factor, get_factors_by_category
 from services.calculator_service import (
-    AnnualProjection,
     CalculatorService,
     DetailedCalculatorInput,
-    FootprintResult,
     QuickCalculatorInput,
 )
-from emission_factors.loader import get_factor, get_factors_by_category
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -229,7 +226,8 @@ class TestQuickCalculator:
         )
         petrol_transport = petrol_result.get_category("transport")
         electric_transport = electric_result.get_category("transport")
-        assert petrol_transport is not None and electric_transport is not None
+        assert petrol_transport is not None
+        assert electric_transport is not None
         assert electric_transport.co2e_kg < petrol_transport.co2e_kg
 
     def test_diet_type_affects_result(self, svc: CalculatorService) -> None:
@@ -251,7 +249,8 @@ class TestQuickCalculator:
 
         vegan_diet = vegan_result.get_category("diet")
         meat_diet = meat_result.get_category("diet")
-        assert vegan_diet is not None and meat_diet is not None
+        assert vegan_diet is not None
+        assert meat_diet is not None
         assert meat_diet.co2e_kg > vegan_diet.co2e_kg
 
     def test_meat_heavy_diet_annual_value(self, svc: CalculatorService) -> None:
@@ -451,12 +450,12 @@ class TestDetailedCalculator:
 
     def test_recycling_reduces_waste_emissions(self, svc: CalculatorService) -> None:
         """Higher recycling fraction produces lower waste emissions."""
-        base_inputs = dict(
-            waste_kg_per_week=10,
-            diet_type="vegan",
-            electricity_factor_id="energy.electricity.india_grid.per_kwh",
-            period_days=365,
-        )
+        base_inputs = {
+            "waste_kg_per_week": 10,
+            "diet_type": "vegan",
+            "electricity_factor_id": "energy.electricity.india_grid.per_kwh",
+            "period_days": 365,
+        }
         low_recycle = svc.calculate_detailed(
             DetailedCalculatorInput(**base_inputs, recycling_fraction=0.0)
         )
@@ -465,7 +464,8 @@ class TestDetailedCalculator:
         )
         low_waste = low_recycle.get_category("waste")
         high_waste = high_recycle.get_category("waste")
-        assert low_waste is not None and high_waste is not None
+        assert low_waste is not None
+        assert high_waste is not None
         assert low_waste.co2e_kg > high_waste.co2e_kg
 
     def test_laptop_purchase_emissions(self, svc: CalculatorService) -> None:
@@ -704,11 +704,11 @@ class TestCalculatorEdgeCases:
 
     def test_partial_year_totals_less_than_full_year(self, svc: CalculatorService) -> None:
         """90-day period should produce lower totals than 365-day period."""
-        base = dict(
-            car_km_per_week=200,
-            electricity_kwh_per_month=300,
-            diet_type="meat_medium",
-        )
+        base = {
+            "car_km_per_week": 200,
+            "electricity_kwh_per_month": 300,
+            "diet_type": "meat_medium",
+        }
         full_year = svc.calculate_quick(QuickCalculatorInput(**base, period_days=365))
         partial = svc.calculate_quick(QuickCalculatorInput(**base, period_days=90))
         assert partial.total_co2e_kg < full_year.total_co2e_kg

@@ -1,5 +1,6 @@
 from django.urls import path
-from apps.dashboard.views import HistoryView, TrendsView, ComparisonView, ProjectionView
+
+from apps.dashboard.views import ComparisonView, HistoryView, ProjectionView, TrendsView
 
 urlpatterns = [
     path("history/", HistoryView.as_view(), name="dashboard-history"),

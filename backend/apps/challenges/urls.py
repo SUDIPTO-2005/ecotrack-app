@@ -1,9 +1,10 @@
 from django.urls import path
+
 from apps.challenges.views import (
-    ChallengeListView,
+    BadgesListView,
     ChallengeJoinView,
     ChallengeLeaveView,
-    BadgesListView,
+    ChallengeListView,
     LeaderboardView,
 )
 

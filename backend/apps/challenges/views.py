@@ -7,19 +7,24 @@ and leaderboard ranking snapshots.
 from __future__ import annotations
 
 from datetime import date
-from django.db.models import F
+
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import Challenge, ChallengeParticipant, Badge, UserBadge, LeaderboardSnapshot
+from .models import (
+    Challenge,
+    ChallengeParticipant,
+    LeaderboardSnapshot,
+    UserBadge,
+)
 from .serializers import (
-    ChallengeSerializer,
     ChallengeParticipantSerializer,
-    UserBadgeSerializer,
+    ChallengeSerializer,
     LeaderboardSnapshotSerializer,
+    UserBadgeSerializer,
 )
 
 
@@ -45,13 +50,13 @@ class ChallengeJoinView(APIView):
     def post(self, request, pk: int) -> Response:
         """Join the specified challenge."""
         challenge = get_object_or_404(Challenge, pk=pk)
-        
+
         # Check if already joined
         participant, created = ChallengeParticipant.objects.get_or_create(
             user=request.user,
             challenge=challenge,
         )
-        
+
         if not created:
             return Response(
                 {"error": {"code": "already_joined", "message": "You have already joined this challenge."}},
@@ -71,13 +76,13 @@ class ChallengeLeaveView(APIView):
         """Leave the specified challenge."""
         challenge = get_object_or_404(Challenge, pk=pk)
         participant = ChallengeParticipant.objects.filter(user=request.user, challenge=challenge).first()
-        
+
         if not participant:
             return Response(
                 {"error": {"code": "not_joined", "message": "You are not a participant in this challenge."}},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            
+
         participant.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -114,7 +119,7 @@ class LeaderboardView(APIView):
 
         # Filters by scope
         queryset = LeaderboardSnapshot.objects.filter(scope=scope)
-        
+
         # Scopes filters
         if scope == "country":
             queryset = queryset.filter(user__country=request.user.country)

@@ -5,8 +5,8 @@ from django.utils.html import format_html
 from .models import (
     EmissionFactor,
     EmissionFactorChangelog,
-    FootprintEntry,
     FootprintCategory,
+    FootprintEntry,
 )
 
 

@@ -8,8 +8,8 @@ Inherits from base.py and configures:
 - In-memory cache fallback when REDIS_URL not set
 - CORS for Render onrender.com URLs
 """
-import os
-from decouple import config, Csv
+from decouple import Csv, config
+
 from .base import *  # noqa: F401, F403
 
 # ---- Production hardening (no sentry dependency at module level) ----

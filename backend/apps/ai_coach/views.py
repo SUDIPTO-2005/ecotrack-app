@@ -6,17 +6,18 @@ Exposes POST endpoint to retrieve coaching advice based on latest calculations.
 from __future__ import annotations
 
 from datetime import timedelta
+
 from django.utils import timezone
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from apps.calculator.models import FootprintEntry, FootprintCategory
+from apps.calculator.models import FootprintCategory, FootprintEntry
 from services.ai_coach import AiCoachService
+
 from .models import AiCoachingSession
 from .serializers import CoachingTipsResponseSerializer
-import json
 
 _coach_service = AiCoachService()
 
@@ -24,7 +25,7 @@ _coach_service = AiCoachService()
 class CoachingTipsView(APIView):
     """
     POST /api/v1/ai-coach/tips/
-    
+
     Generates weekly coaching recommendations based on the user's latest calculation.
     Enforces a strict rate-limit of 1 generation request per user per week, returning
     the cached response if called again within 7 days.
@@ -105,7 +106,7 @@ def _normalize_tips(tips: list) -> list:
     Ensure tip dicts use the canonical keys: category, recommendation, impact_level.
     Handles old-format keys (action/impact) from legacy Claude responses.
     """
-    IMPACT_MAP = {
+    impact_map = {
         "high": "High", "medium": "Medium", "low": "Low",
         "low-medium": "Low", "low_medium": "Low",
     }
@@ -114,7 +115,7 @@ def _normalize_tips(tips: list) -> list:
         normalized.append({
             "category": tip.get("category", "general"),
             "recommendation": tip.get("recommendation") or tip.get("action", ""),
-            "impact_level": IMPACT_MAP.get(
+            "impact_level": impact_map.get(
                 str(tip.get("impact_level") or tip.get("impact", "")).lower()[:10],
                 "Medium"
             ),

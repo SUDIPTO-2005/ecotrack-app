@@ -1,5 +1,5 @@
-import pytest
 from services.ecobot_knowledge import get_chatbot_response
+
 
 def test_get_chatbot_response_exact_patterns():
     # Test transport category

@@ -2,9 +2,10 @@
 Management command to seed challenges and badges into the database.
 Run with: python manage.py seed_challenges
 """
+from datetime import timedelta
+
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from datetime import timedelta
 
 
 class Command(BaseCommand):

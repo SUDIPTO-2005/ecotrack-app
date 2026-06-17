@@ -3,8 +3,9 @@ Development settings for EcoTrack.
 
 Never use these settings in production. DEBUG is True, relaxed security.
 """
-from .base import *  # noqa: F401, F403
 from decouple import config
+
+from .base import *  # noqa: F401, F403
 
 DEBUG = True
 

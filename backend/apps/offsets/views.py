@@ -6,9 +6,9 @@ Exposes GET listing and details endpoints along with informational compliance di
 from __future__ import annotations
 
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import OffsetProject
 from .serializers import OffsetProjectSerializer
@@ -24,7 +24,7 @@ DISCLAIMER_NOTICE = (
 class OffsetProjectListView(APIView):
     """
     GET /api/v1/offsets/ — List available carbon offset projects.
-    
+
     Includes the mandatory compliance disclaimer in the API header / response.
     """
 
@@ -34,7 +34,7 @@ class OffsetProjectListView(APIView):
         """List offset projects."""
         projects = OffsetProject.objects.filter(is_available=True)
         serializer = OffsetProjectSerializer(projects, many=True)
-        
+
         return Response({
             "disclaimer": DISCLAIMER_NOTICE,
             "results": serializer.data

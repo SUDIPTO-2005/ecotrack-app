@@ -10,14 +10,18 @@ Exposes dashboard endpoints for retrieving:
 from __future__ import annotations
 
 from datetime import date, timedelta
-from django.db.models import Sum, Avg
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 
-from apps.calculator.models import FootprintEntry, FootprintCategory, CalculatorMode
-from apps.calculator.serializers import FootprintResultSerializer, AnnualProjectionSerializer
+from django.db.models import Sum
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from apps.calculator.models import FootprintCategory, FootprintEntry
+from apps.calculator.serializers import (
+    AnnualProjectionSerializer,
+    FootprintResultSerializer,
+)
 from services.calculator_service import CalculatorService
 
 
@@ -29,21 +33,21 @@ class HistoryView(APIView):
     def get(self, request) -> Response:
         """Get list of historical footprint entries."""
         entries = FootprintEntry.objects.filter(user=request.user).order_by("-date", "-created_at")
-        
+
         # Simple page number pagination
         page = self.request.query_params.get("page", 1)
         try:
             page = int(page)
         except ValueError:
             page = 1
-            
+
         page_size = 20
         start = (page - 1) * page_size
         end = start + page_size
-        
+
         count = entries.count()
         results = entries[start:end]
-        
+
         serializer = FootprintResultSerializer(results, many=True)
         return Response({
             "count": count,
@@ -97,27 +101,27 @@ class ComparisonView(APIView):
     def get(self, request) -> Response:
         """Retrieve comparison figures."""
         user = request.user
-        
+
         # User average annualised CO2e (kg) from recent calculations
         latest_entry = FootprintEntry.objects.filter(user=user).order_by("-date").first()
         user_annualised_tonnes = float(latest_entry.annualised_co2e_kg / 1000) if latest_entry else 0.0
 
         country_code = user.country or "IN"
-        
+
         # Query synced NationalAverageDataset baseline averages
         from apps.data_sync.models import NationalAverageDataset
 
-        COUNTRY_NAMES = {
+        country_names = {
             "IN": "India", "US": "United States", "GB": "United Kingdom",
             "DE": "Germany", "FR": "France", "CN": "China", "AU": "Australia",
             "CA": "Canada", "JP": "Japan", "BR": "Brazil",
         }
-        country_name = COUNTRY_NAMES.get(country_code, country_code)
-        
+        country_name = country_names.get(country_code, country_code)
+
         db_average = NationalAverageDataset.objects.filter(
             country_code=country_code
         ).order_by("-year").first()
-        
+
         if db_average:
             national_avg = float(db_average.per_capita_co2e_tonnes)
         else:
@@ -134,9 +138,9 @@ class ComparisonView(APIView):
         world_average = NationalAverageDataset.objects.filter(
             country_code="WRL"
         ).order_by("-year").first()
-        
+
         global_avg = float(world_average.per_capita_co2e_tonnes) if world_average else 4.5
-        
+
         return Response({
             "user_annualised_tonnes": user_annualised_tonnes,
             "country_code": country_code,
@@ -163,7 +167,7 @@ class ProjectionView(APIView):
 
         svc = CalculatorService()
         projection = svc._compute_annual_projection(latest_entry.total_co2e_kg, latest_entry.period_days)
-        
+
         return Response({
             "latest_entry_id": latest_entry.id,
             "latest_entry_date": latest_entry.date.isoformat(),

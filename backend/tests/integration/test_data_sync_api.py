@@ -4,7 +4,6 @@ Integration tests for the Government Data Sync API endpoints (Phase 4).
 from __future__ import annotations
 
 import pytest
-import responses
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -33,7 +32,7 @@ class TestDataSyncAPI:
         settings.DATA_SYNC_SECRET = "test-secret"
         url = reverse("data-sync-national-averages")
 
-        from unittest.mock import patch, MagicMock
+        from unittest.mock import MagicMock, patch
         mock_response = MagicMock()
         mock_response.text = self.MOCK_CSV
         mock_response.status_code = 200
@@ -54,7 +53,7 @@ class TestDataSyncAPI:
         # Check DB updates
         ind = NationalAverageDataset.objects.get(country_code="IN", year=2021)
         assert float(ind.per_capita_co2e_tonnes) == 1.89
-        
+
         world = NationalAverageDataset.objects.get(country_code="WRL", year=2021)
         assert float(world.per_capita_co2e_tonnes) == 4.45
 

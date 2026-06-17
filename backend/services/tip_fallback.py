@@ -14,10 +14,10 @@ class TipFallbackEngine:
     def generate_fallback_tips(self, category_breakdown: list[dict]) -> list[dict]:
         """
         Produce a list of structured reduction actions sorted by categories.
-        
+
         Args:
             category_breakdown: List of category dict elements containing percentage and co2e_kg values.
-            
+
         Returns:
             List of tips dict items containing 'category', 'action', and 'impact'.
         """

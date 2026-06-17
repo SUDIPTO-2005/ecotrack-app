@@ -6,9 +6,9 @@ Stores session history, weekly cache tips, and token usage statistics for user c
 from __future__ import annotations
 
 from decimal import Decimal
-from django.db import models
-from django.conf import settings
 
+from django.conf import settings
+from django.db import models
 
 
 class AiCoachingSession(models.Model):
