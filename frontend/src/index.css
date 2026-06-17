@@ -1533,3 +1533,69 @@ input:focus, select:focus {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* --- Mobile Responsive CSS Updates --- */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-glow);
+    padding: 16px;
+    box-sizing: border-box;
+    gap: 16px;
+  }
+
+  .sidebar-logo {
+    margin-bottom: 12px;
+    justify-content: center;
+  }
+
+  .nav-links {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    gap: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .nav-link.active {
+    border-left: none;
+    border-bottom: 2px solid var(--color-green);
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  .main-content {
+    padding: 20px 16px;
+  }
+
+  .challenges-content-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .leaderboard-sidebar {
+    width: 100%;
+  }
+
+  .challenges-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .badges-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+}

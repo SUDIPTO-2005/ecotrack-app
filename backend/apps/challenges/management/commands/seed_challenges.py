@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.seed_badges()
         self.seed_challenges()
-        self.stdout.write(self.style.SUCCESS("✅ Challenges and Badges seeded successfully!"))
+        self.stdout.write(self.style.SUCCESS("[OK] Challenges and Badges seeded successfully!"))
 
     def seed_badges(self):
         from apps.challenges.models import Badge
