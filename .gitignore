@@ -1,0 +1,75 @@
+# ============================================================
+# EcoTrack — Root .gitignore
+# ============================================================
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+ENV/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.log
+local_settings.py
+db.sqlite3
+db_dev.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Django
+backend/.env
+backend/db_dev.sqlite3
+
+# Node / Vite / React
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+
+# GCP / Cloud Run
+.gcloudignore
+gcloud-service-key.json
+service-account-key.json
+*.json.key
+
+# Misc
+*.bak
+*.tmp
+.env

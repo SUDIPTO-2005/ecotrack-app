@@ -1,0 +1,22 @@
+# Cloud Build config for the frontend (handles VITE_API_BASE_URL build arg)
+# Used by deploy.ps1 for the frontend build step
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'VITE_API_BASE_URL=${_VITE_API_BASE_URL}'
+      - '-t'
+      - '${_IMAGE}'
+      - '.'
+    dir: 'frontend'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_IMAGE}']
+
+substitutions:
+  _VITE_API_BASE_URL: ''
+  _IMAGE: ''
+
+options:
+  logging: CLOUD_LOGGING_ONLY
