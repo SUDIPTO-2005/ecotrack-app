@@ -77,8 +77,8 @@ export default function AuthForms() {
         if (messages.length > 0) {
           errorMessage = messages.join(' | ');
         }
-      } else if (err?.error?.message) {
-        errorMessage = err.error.message;
+      } else if (error.error?.message) {
+        errorMessage = error.error.message;
       }
       showToast(errorMessage, 'error');
     } finally {
