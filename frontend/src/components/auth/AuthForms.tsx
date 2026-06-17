@@ -65,7 +65,20 @@ export default function AuthForms() {
       await fetchUser();
     } catch (err: any) {
       console.error(err);
-      showToast(err?.error?.message || 'Registration failed. Check password length (min 10) and email format.', 'error');
+      let errorMessage = 'Registration failed. Check password length (min 10) and email format.';
+      if (err?.error?.details) {
+        const details = err.error.details;
+        const messages = Object.keys(details).map(key => {
+          const fieldErrors = Array.isArray(details[key]) ? details[key].join(', ') : details[key];
+          return `${key}: ${fieldErrors}`;
+        });
+        if (messages.length > 0) {
+          errorMessage = messages.join(' | ');
+        }
+      } else if (err?.error?.message) {
+        errorMessage = err.error.message;
+      }
+      showToast(errorMessage, 'error');
     } finally {
       setLoading(false);
     }
