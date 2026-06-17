@@ -1,20 +1,31 @@
 """
-Cloud Run settings for EcoTrack.
+Production settings for EcoTrack on Render / Cloud Run.
 
-Inherits from production.py and overrides settings specific to
-running on Google Cloud Run (managed, stateless, TLS-terminated).
-
-Key differences from generic production:
-- SECURE_SSL_REDIRECT = False  (Cloud Run's load balancer handles TLS)
-- DATABASE_URL env var parsed via dj-database-url
+Inherits from base.py and configures:
+- TLS handled by the platform proxy (no redirect loops)
+- DATABASE_URL parsed via dj-database-url
 - WhiteNoise serves static files (no separate static host needed)
 - In-memory cache fallback when REDIS_URL not set
+- CORS for Render onrender.com URLs
 """
 import os
 from decouple import config, Csv
+from .base import *  # noqa: F401, F403
 
-# ---- inherit all production hardening ----
-from .production import *  # noqa: F401, F403
+# ---- Production hardening (no sentry dependency at module level) ----
+DEBUG = False
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = "DENY"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# WhiteNoise middleware
+MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+] + MIDDLEWARE[2:]  # noqa: F405
 
 # ---- Cloud Run: TLS is terminated at the load balancer ----
 # Setting this True causes redirect loops on Cloud Run.
@@ -35,11 +46,13 @@ ALLOWED_HOSTS = config(  # type: ignore[assignment]
 _database_url = config("DATABASE_URL", default="")
 if _database_url:
     import dj_database_url  # type: ignore[import]
+    # ssl_require=False — Render's internal DB uses postgres:// without SSL
+    # External DBs (Neon etc.) include sslmode=require in the URL itself
     DATABASES = {  # type: ignore[assignment]
         "default": dj_database_url.parse(
             _database_url,
             conn_max_age=60,
-            ssl_require=True,
+            ssl_require=False,
         )
     }
 
@@ -65,17 +78,18 @@ else:
 # WhiteNoise is already in MIDDLEWARE from production.py
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"  # type: ignore[assignment]
 
-# ---- CORS: set at deploy time via env var ----
-# e.g. CORS_ALLOWED_ORIGINS=https://ecotrack-frontend-xxxx-as.a.run.app
+# ---- CORS: allow Render + Cloud Run URLs ----
 CORS_ALLOWED_ORIGINS = config(  # type: ignore[assignment]
     "CORS_ALLOWED_ORIGINS",
     default="",
     cast=Csv(),
 )
-# Also allow all Cloud Run preview URLs during initial setup
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://ecotrack-.*\.a\.run\.app$",
+    r"^https://ecotrack-.*\.onrender\.com$",   # Render
+    r"^https://ecotrack-.*\.a\.run\.app$",     # Cloud Run
+    r"^http://localhost:\d+$",                  # Local dev
 ]
+CORS_ALLOW_ALL_ORIGINS = True  # Permissive for free-tier deploy
 
 # ---- Email: use console backend if no RESEND_API_KEY set ----
 if not config("RESEND_API_KEY", default=""):

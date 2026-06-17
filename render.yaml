@@ -11,8 +11,8 @@ services:
     region: singapore          # Closest free-tier region to India
     plan: free
     rootDir: backend
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate --noinput"
+    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.cloudrun
@@ -38,8 +38,8 @@ services:
     region: singapore
     plan: free
     rootDir: frontend
-    buildCommand: "npm install && VITE_API_BASE_URL=https://ecotrack-backend.onrender.com npm run build"
-    startCommand: "npx serve dist -p $PORT"
+    buildCommand: "npm install && npm install -g serve && VITE_API_BASE_URL=https://ecotrack-backend.onrender.com npm run build"
+    startCommand: "serve dist -s -p $PORT"
     envVars:
       - key: NODE_VERSION
         value: "20"
