@@ -111,8 +111,9 @@ export default function AuthForms() {
         {mode === 'login' ? (
           <form onSubmit={handleLoginSubmit} className="auth-form">
             <div className="input-group">
-              <label>Email Address</label>
+              <label htmlFor="login-email">Email Address</label>
               <input
+                id="login-email"
                 type="email"
                 required
                 value={loginForm.email}
@@ -121,8 +122,9 @@ export default function AuthForms() {
               />
             </div>
             <div className="input-group">
-              <label>Password</label>
+              <label htmlFor="login-password">Password</label>
               <input
+                id="login-password"
                 type="password"
                 required
                 value={loginForm.password}
@@ -137,8 +139,9 @@ export default function AuthForms() {
         ) : (
           <form onSubmit={handleRegisterSubmit} className="auth-form scrollable-panel">
             <div className="input-group">
-              <label>Username</label>
+              <label htmlFor="register-username">Username</label>
               <input
+                id="register-username"
                 type="text"
                 required
                 value={registerForm.username}
@@ -147,8 +150,9 @@ export default function AuthForms() {
               />
             </div>
             <div className="input-group">
-              <label>Email Address</label>
+              <label htmlFor="register-email">Email Address</label>
               <input
+                id="register-email"
                 type="email"
                 required
                 value={registerForm.email}
@@ -157,8 +161,9 @@ export default function AuthForms() {
               />
             </div>
             <div className="input-group">
-              <label>Password</label>
+              <label htmlFor="register-password">Password</label>
               <input
+                id="register-password"
                 type="password"
                 required
                 value={registerForm.password}
@@ -167,8 +172,9 @@ export default function AuthForms() {
               />
             </div>
             <div className="input-group">
-              <label>Display Name (Optional)</label>
+              <label htmlFor="register-display-name">Display Name (Optional)</label>
               <input
+                id="register-display-name"
                 type="text"
                 value={registerForm.display_name}
                 onChange={(e) => setRegisterForm({ ...registerForm, display_name: e.target.value })}
@@ -177,8 +183,9 @@ export default function AuthForms() {
             </div>
             <div className="input-row-grid">
               <div className="input-group">
-                <label>City</label>
+                <label htmlFor="register-city">City</label>
                 <input
+                  id="register-city"
                   type="text"
                   value={registerForm.city}
                   onChange={(e) => setRegisterForm({ ...registerForm, city: e.target.value })}
@@ -186,8 +193,9 @@ export default function AuthForms() {
                 />
               </div>
               <div className="input-group">
-                <label>Country</label>
+                <label htmlFor="register-country">Country</label>
                 <input
+                  id="register-country"
                   type="text"
                   value={registerForm.country}
                   onChange={(e) => setRegisterForm({ ...registerForm, country: e.target.value })}
